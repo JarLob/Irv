@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Irv.Engine test</title>
+  <meta name="description" content="Improved ASP.NET Request Validation Enigne Test">
+  <meta name="author" content="Vladimir Kochetkov">
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div id="{0}">
+    <script src="js/scripts.js"></script>
+    <a href="#">link</a>
+  </div>
+</body>
+</html>
+<!--End-of-template-->
+
+';alert(String.fromCharCode(88,83,83))//';alert(String.fromCharCode(88,83,83))//";alert(String.fromCharCode(88,83,83))//";alert(String.fromCharCode(88,83,83))//--></SCRIPT>">'><SCRIPT>alert(String.fromCharCode(88,83,83))</SCRIPT>
+
+'';!--"<XSS>=&{()}
+
+%22+style=%22width:100px;height:100px%22+onclick=%22alert%28/lol/%29
+
+%22onmouseover=alert('1')//
+
+%22%20onmouseover=alert(1)//
+
+%22/onmouseover=alert(1)//
+
+%22%0conmouseover=alert(1)
+
+test%22onmouseover=[alert(1)]//
+
+test%22onmouseover=!alert(1)//
+
+test%22onmouseover={alert(1)}//
+
+test%22onmouseover=alert(1)/%26sol;
+
+#" onmouseover="alert('xxs')
+
+" onmouseover="alert('xxs')
+

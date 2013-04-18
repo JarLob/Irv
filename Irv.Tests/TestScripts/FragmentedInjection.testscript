@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Irv.Engine test</title>
+  <meta name="description" content="Improved ASP.NET Request Validation Enigne Test">
+  <meta name="author" content="Vladimir Kochetkov">
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div id="{0}">
+    <script src="js/scripts.js"></script>
+    <a href="#">{1}</a>
+  </div>
+</body>
+</html>
+<!--End-of-template-->
+
+test%22onmouseover='javascript://
+%0aalert(1)'
+
+test%22onmouseover='javascript:alert(1)//
+'
+

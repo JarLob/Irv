@@ -1,7 +1,7 @@
 Irv
 ===
 
-Irv is an Improved Request Validation engine for ASP.NET Framework to prevent Type-1 (reflected) XSS attacks. It provides a higher security level than the original one because of extended logic of request validation and written from scratch response validation module. Response validation approach is based on total integrity control of all parts of the output document, which can be potentially tainted by request parameters.
+Irv is a Proof-of-Concept improved request validation engine for ASP.NET Framework to prevent Type-1 (reflected) XSS attacks. It provides a higher security level than the original one because of extended logic of request validation and written from scratch response validation module. Response validation approach is based on total integrity control of all parts of the output document, which can be potentially tainted by request parameters.
 
 Demo
 ====
@@ -20,7 +20,7 @@ Put all Irv's assemblies to GAC or '\bin' directory of ASP.NET project. Add foll
       </system.web>
       <system.webServer>
         <modules>
-          <add name="Irv.Engine.dll" type="Irv.Engine.XssResponseValidator" />
+          <add name="Irv.Engine.dll" type="Irv.Engine.XssResponseValidationModule" />
         </modules>
       </system.webServer>
     </configuration>
