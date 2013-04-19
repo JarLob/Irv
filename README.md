@@ -1,7 +1,7 @@
 Warning!
 ========
 
-This is a deeply beta. It's still on PoC stage and should not be used (yet) at production environments.
+This is a well-test beta. It should be used in a production environments only with the crossed fingers on all the limbs, and is at your own risk.
 
 Irv
 ===
@@ -30,3 +30,10 @@ Put all Irv's assemblies to GAC or '\bin' directory of ASP.NET project. Add foll
       </system.webServer>
     </configuration>
 ```
+
+Security tests and performance benchmarks
+=========================================
+
+Irv has successfully passed a long and painful manual testing with a tons of various XSS vectors. Neither Acunetix WVS (http://www.acunetix.com/vulnerability-scanner/) nor Snuck (https://code.google.com/p/snuck/) aren't bypasses it too. Nevertheless Irv is still in beta and yet can contain some bugs and false-positives specific to certain web-applications.
+
+Average page processing time for XSS vectors from the wild is near of 50-75ms, and a significant part of the Irv code is a still subject to optimization and improvement.
