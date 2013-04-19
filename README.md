@@ -1,7 +1,7 @@
 Warning!
 ========
 
-This is a well-test beta. It should be used in a production environments only with the crossed fingers on all the limbs, and is at your own risk.
+This is an only beta. It should be used in a production environments only with the crossed fingers on all the limbs, and is at your own risk.
 
 Irv
 ===
