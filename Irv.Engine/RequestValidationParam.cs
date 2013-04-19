@@ -1,8 +1,4 @@
-﻿#if DEBUG
-using System.Runtime.Serialization;
-#endif
-
-namespace Irv.Engine
+﻿namespace Irv.Engine
 {
     internal class RequestValidationParam
     {
