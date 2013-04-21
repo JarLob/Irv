@@ -308,7 +308,7 @@ namespace Irv.Engine
             foreach (
                 var node in
                     htmlDocument.DocumentNode.Descendants()
-                                .Where(x => x.NodeType == HtmlNodeType.Element))
+                                .Where(x => x.NodeType == HtmlNodeType.Element || x.NodeType == HtmlNodeType.Comment))
             {
                 var nodeBeginPosition = node.StreamPosition;
                 var nodeEndPosition = nodeBeginPosition + node.OuterHtml.Length;
@@ -323,6 +323,17 @@ namespace Irv.Engine
                         dangerousParam = insertionArea.Param;
                         return false;
                     }
+
+                    // HACK: Deny IE 9- related bypass technique with vector "<![<img src=a onerror=alert(/ololo/)//]-->"
+                    var brokenCommentIndex = node.OuterHtml.IndexOf("<!", StringComparison.Ordinal);
+                    if (brokenCommentIndex > -1 &&
+                        (node.OuterHtml[brokenCommentIndex + 1] != '-' || node.OuterHtml[brokenCommentIndex + 2] != '-') &&
+                        (insertionArea.Param.Value.Contains("<!")))
+                    {
+                        dangerousParam = insertionArea.Param;
+                        return false;
+                    }
+
                     // Check if start position of node was included to insertions map
                     if (insertionArea.Includes(nodeBeginPosition))
                     {
@@ -330,6 +341,8 @@ namespace Irv.Engine
                         dangerousParam = insertionArea.Param;
                         return false;
                     }
+
+                    if (node.NodeType != HtmlNodeType.Element) continue;
 
                     foreach (var attr in node.Attributes)
                     {
@@ -343,7 +356,7 @@ namespace Irv.Engine
                         }
 
                         var attrValueBeginPosition = responseText.IndexOf(attr.Value, attrNameBeginPosition,
-                                                                            StringComparison.Ordinal);
+                                                                          StringComparison.Ordinal);
                         var attrValueEndPosition = attrValueBeginPosition + attr.Value.Length;
 
                         // Skip if attribute value wasn't tainted by request parameter
