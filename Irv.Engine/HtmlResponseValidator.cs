@@ -318,17 +318,10 @@ namespace Irv.Engine
                         insertionsMap.Where(ia => ia.Includes(nodeBeginPosition, nodeEndPosition)))
                 {
                     // HACK: Deny IE related bypass technique (http://www.securityfocus.com/archive/1/524043)
-                    if (node.OuterHtml.Contains("<%") && (insertionArea.Param.Value.Contains("<%")))
-                    {
-                        dangerousParam = insertionArea.Param;
-                        return false;
-                    }
-
-                    // HACK: Deny IE 9- related bypass technique with vector "<![<img src=a onerror=alert(/ololo/)//]-->"
-                    var brokenCommentIndex = node.OuterHtml.IndexOf("<!", StringComparison.Ordinal);
-                    if (brokenCommentIndex > -1 &&
-                        (node.OuterHtml[brokenCommentIndex + 1] != '-' || node.OuterHtml[brokenCommentIndex + 2] != '-') &&
-                        (insertionArea.Param.Value.Contains("<!")))
+                    if (
+                        insertionArea.Includes(htmlDocument.DocumentNode.OuterHtml.IndexOf("<%",
+                                                                                           insertionArea.BeginPosition,
+                                                                                           StringComparison.Ordinal)))
                     {
                         dangerousParam = insertionArea.Param;
                         return false;
