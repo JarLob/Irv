@@ -17,7 +17,7 @@ namespace Irv.Engine
         private const int TokensCountTreshold = 4;
         // Minimal count of nodes at AST of parsed code to threat it as potentially dangerous
         private const int AstNodesCountTreshold = 1;
-        // Hint: because of 'alert(0)' consist of 2 nodes, 5 tokens and 7 symbols :D
+        // Hint: because of 'alert(0)' consist of 2 nodes, 5 tokens and 8 symbols :D
 
         // HTML event-hanlders attributes names
         private readonly string[] _htmlEventHanlders =
@@ -323,7 +323,7 @@ namespace Irv.Engine
                         dangerousParam = insertionArea.Param;
                         return false;
                     }
-                    // Check if start position of node is included to insertions map
+                    // Check if start position of node was included to insertions map
                     if (insertionArea.Includes(nodeBeginPosition))
                     {
                         // Inclusion found (node was injected by request parameter)
@@ -346,10 +346,10 @@ namespace Irv.Engine
                                                                             StringComparison.Ordinal);
                         var attrValueEndPosition = attrValueBeginPosition + attr.Value.Length;
 
-                        // Skip if attribute value doesn't tainted by request parameter
+                        // Skip if attribute value wasn't tainted by request parameter
                         if (!insertionArea.Includes(attrValueBeginPosition, attrValueEndPosition)) continue;
 
-                        // Skip if attribute value passed validation
+                        // Skip if attribute value passes validation
                         if (ValidateAttrWithParam(attr.Name, attr.Value, insertionArea.Param.Value)) continue;
 
                         // Attribute value is dangerously tainted
@@ -391,7 +391,7 @@ namespace Irv.Engine
 
             if (_htmlRefAttrs.Contains(attrName))
             {
-                // Tainted URI shouldn't contains any non-urlencoded HTML entities 
+                // Tainted URI shouldn't contain any non-urlencoded HTML entities 
                 if (attrValue.Contains("&#") || _htmlNamedEntityReferences.Any(attrValue.Contains)) return false;
 
                 if (attrValue.Contains(":"))
@@ -402,7 +402,7 @@ namespace Irv.Engine
                     // Malformed URI
                     if (!result) return false;
 
-                    // Because of attrValue contains ":" character it should be absolute
+                    // Because of attrValue contains ":" character, it should be absolute
                     if (!uri.IsAbsoluteUri) return false;
 
                     try
@@ -435,7 +435,7 @@ namespace Irv.Engine
             // Javascript code integrity was violated by request param
             if (!IsValidJsCode(jsValue, out tree)) return false;
 
-            // Skip if common part of attribute value and taintful parameter less than defined treshhold
+            // Skip if common part of attribute value and taintful parameter less than defined treshold
             return LongestCommonSubstring(jsValue, paramValue, out lcs) <= LcsLengthTreshold
                 // Value of parameter should be treated as harmless only if it whole fits at one token
                 || IsTreeToken(tree, lcs);
