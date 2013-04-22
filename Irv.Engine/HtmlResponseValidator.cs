@@ -268,6 +268,13 @@ namespace Irv.Engine
         {
             dangerousParam = null;
 
+            // HACK: Deny null-byte injection techniques. Perhaps, there are a better place and method to implement it.
+            if (responseText.IndexOf('\0') != -1)
+            {
+                dangerousParam = new RequestValidationParam("null-byte", "Undefined", "...\\0");
+                return false;
+            }
+
             var htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(responseText);
 
@@ -302,7 +309,9 @@ namespace Irv.Engine
                 var insertionArea in
                     insertionsMap.Where(
                         insertionArea =>
-                        insertionArea.Param.Value.Contains("\0") || insertionArea.Param.Value.Contains("<%")))
+                        // IE related bypass technique (http://www.securityfocus.com/archive/1/524043)
+                        insertionArea.Param.Value.Contains("<%")
+                     ))
             {
                 dangerousParam = insertionArea.Param;
                 return false;
