@@ -268,13 +268,6 @@ namespace Irv.Engine
         {
             dangerousParam = null;
 
-            // HACK: Deny null-byte injection techniques. Perhaps, there are a better place and method to implement it.
-            if (responseText.IndexOf('\0') != -1)
-            {
-                dangerousParam = new RequestValidationParam("null-byte", "Undefined", "...\\0");
-                return false;
-            }
-
             var htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(responseText);
 
@@ -304,6 +297,17 @@ namespace Irv.Engine
                 }
             }
 
+            // HACK: Deny several well-known bypasses techniques
+            foreach (
+                var insertionArea in
+                    insertionsMap.Where(
+                        insertionArea =>
+                        insertionArea.Param.Value.Contains("\0") || insertionArea.Param.Value.Contains("<%")))
+            {
+                dangerousParam = insertionArea.Param;
+                return false;
+            }
+
             // Walk through elements of parsed response to check its integrity
             foreach (
                 var node in
@@ -317,16 +321,6 @@ namespace Irv.Engine
                     var insertionArea in
                         insertionsMap.Where(ia => ia.Includes(nodeBeginPosition, nodeEndPosition)))
                 {
-                    // HACK: Deny IE related bypass technique (http://www.securityfocus.com/archive/1/524043)
-                    if (
-                        insertionArea.Includes(htmlDocument.DocumentNode.OuterHtml.IndexOf("<%",
-                                                                                           insertionArea.BeginPosition,
-                                                                                           StringComparison.Ordinal)))
-                    {
-                        dangerousParam = insertionArea.Param;
-                        return false;
-                    }
-
                     // Check if start position of node was included to insertions map
                     if (insertionArea.Includes(nodeBeginPosition))
                     {
