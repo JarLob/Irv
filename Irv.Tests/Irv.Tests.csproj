@@ -68,7 +68,10 @@
     <None Include="TestScripts\EscapedJsInjection.testscript">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="TestScripts\FragmentedInjection.testscript">
+    <None Include="TestScripts\FragmentedInjectionx2.testscript">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestScripts\FragmentedInjectionx3.testscript">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="TestScripts\TriviaTagInjection.testscript">

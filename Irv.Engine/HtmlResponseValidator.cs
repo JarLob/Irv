@@ -304,17 +304,29 @@ namespace Irv.Engine
                 }
             }
 
-            // HACK: Deny several well-known bypasses techniques
-            foreach (
-                var insertionArea in
-                    insertionsMap.Where(
-                        insertionArea =>
-                        // IE related bypass technique (http://www.securityfocus.com/archive/1/524043)
-                        insertionArea.Param.Value.Contains("<%")
-                     ))
+            // Deny obviously dangerous insertions
+            foreach (var insertionArea in insertionsMap)
             {
-                dangerousParam = insertionArea.Param;
-                return false;
+                var paramValue = insertionArea.Param.Value;
+                for (var i = 0; i < paramValue.Length; i++)
+                {
+                    // paramValue ⊃ "<[A-Za-z%!/?]?" 
+                    if (
+                        paramValue[i] == '<' && i < paramValue.Length - 1 && (
+                            (
+                                (paramValue[i + 1] >= 'a' && paramValue[i + 1] <= 'z') ||
+                                (paramValue[i + 1] >= 'A' && paramValue[i + 1] <= 'Z')
+                            ) ||
+                            paramValue[i + 1] == '%' ||
+                            paramValue[i + 1] == '!' ||
+                            paramValue[i + 1] == '/' ||
+                            paramValue[i + 1] == '?'
+                        ))
+                    {
+                        dangerousParam = insertionArea.Param;
+                        return false;
+                    }
+                }
             }
 
             // Walk through elements of parsed response to check its integrity

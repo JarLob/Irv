@@ -34,9 +34,15 @@ namespace Irv.Tests
         }
 
         [TestMethod]
-        public void FragmentedInjection()
+        public void FragmentedInjectionx2()
         {
-            TestScriptRunner("FragmentedInjection");
+            TestScriptRunner("FragmentedInjectionx2");
+        }
+
+        [TestMethod]
+        public void FragmentedInjectionx3()
+        {
+            TestScriptRunner("FragmentedInjectionx3");
         }
 
         [TestMethod]
@@ -71,21 +77,9 @@ namespace Irv.Tests
                 {
                     if (paramList.Count > 0)
                     {
-                        string responseText;
-
-                        switch (paramList.Count)
-                        {
-                            case 1:
-                                responseText = string.Format(responseTemplate, paramList[0]);
-                                break;
-
-                            case 2:
-                                responseText = string.Format(responseTemplate, paramList[0], paramList[1]);
-                                break;
-
-                            default:
-                                throw new NotImplementedException();
-                        }
+// ReSharper disable CoVariantArrayConversion
+                        var responseText = string.Format(responseTemplate, paramList.ToArray());
+// ReSharper restore CoVariantArrayConversion
 
                         var validator = new HtmlResponseValidator();
                         var taintfulParams =
