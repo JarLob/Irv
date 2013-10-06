@@ -11,7 +11,7 @@ Irv is a proof-of-concept of the improved request validation engine for ASP.NET 
 Demo
 ====
 
-Online demo of the vulnerable web-application protected by Irv is available at http://irv.c2e.pw/Demo/
+Online demo of the vulnerable web-application protected by Irv is temporary unvailable :(
 
 Install
 =======
