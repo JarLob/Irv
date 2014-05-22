@@ -1,3 +1,0 @@
-[submodule "Dependencies/JsParser.Net"]
-	path = Dependencies/JsParser.Net
-	url = git://github.com/kochetkov/JsParser.Net.git

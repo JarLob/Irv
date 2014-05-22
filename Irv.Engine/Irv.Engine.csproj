@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -40,8 +40,17 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\Packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Gumbo.Bindings">
+      <HintPath>..\packages\Gumbo.Wrappers.1.0.2.1\lib\net45\Gumbo.Bindings.dll</HintPath>
+    </Reference>
+    <Reference Include="Gumbo.Wrappers">
+      <HintPath>..\packages\Gumbo.Wrappers.1.0.2.1\lib\net45\Gumbo.Wrappers.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Jint">
+      <HintPath>..\packages\Jint.2.1.0.0\lib\portable-net40+sl50+wp80+win\Jint.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -58,21 +67,15 @@
     <Compile Include="InsertionArea.cs" />
     <Compile Include="InsertionMap.cs" />
     <Compile Include="RequestValidationParam.cs" />
-    <Compile Include="StreamWatcher.cs" />
+    <Compile Include="ResponseFilter.cs" />
     <Compile Include="XssRequestValidator.cs" />
     <Compile Include="XssResponseValidationModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="..\Dependencies\CommonAssemblyInfo.cs" />
+    <Compile Include="..\CommonAssemblyInfo.cs" />
     <Compile Include="HtmlResponseValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dependencies\JsParser.Net\JsParser.Net\JsParser.Net.csproj">
-      <Project>{c1ab6b46-e99c-4f27-a30f-1cf04178b455}</Project>
-      <Name>JsParser.Net</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

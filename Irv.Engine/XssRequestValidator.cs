@@ -14,6 +14,7 @@ namespace Irv.Engine
             out int validationFailureIndex)
         {
             validationFailureIndex = -1;
+            
             var isAlphaNumerical = true;
 
             for (var i = 0; i < value.Length; i++)

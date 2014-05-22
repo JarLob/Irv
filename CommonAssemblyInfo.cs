@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Improved ASP.NET Request Validation Engine")]
-[assembly: AssemblyCopyright("Copyright © Vladimir Kochetkov 2013")]
+[assembly: AssemblyCopyright("Copyright © Vladimir Kochetkov 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

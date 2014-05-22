@@ -1,21 +1,30 @@
 ﻿using System;
 using System.IO;
+using System.Linq.Expressions;
 using System.Text;
+using System.Web.Caching;
 
 namespace Irv.Engine
 {
-    internal class StreamWatcher : Stream
+    internal class ResponseFilter : Stream
     {
         private readonly Stream _base;
-        private readonly MemoryStream _memoryStream = new MemoryStream();
 
-        public StreamWatcher(Stream stream)
+        private readonly Encoding _encoding;
+
+        public string Response { get; set; }
+
+            
+        public ResponseFilter(Stream stream, Encoding encoding)
         {
             _base = stream;
+            _encoding = encoding;
         }
 
         public override void Flush()
         {
+            var buffer = _encoding.GetBytes(Response);
+            _base.Write(buffer, 0, buffer.Length);
             _base.Flush();
         }
 
@@ -26,57 +35,51 @@ namespace Irv.Engine
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            _memoryStream.Write(buffer, offset, count);
-            _base.Write(buffer, offset, count);
+            Response += _encoding.GetString(buffer);
         }
 
         public override string ToString()
         {
-            return Encoding.UTF8.GetString(_memoryStream.ToArray());
+            return Response;
         }
 
-        #region Rest of the overrides
         public override bool CanRead
         {
-            get { throw new NotImplementedException(); }
+            get { return true; }
         }
 
         public override bool CanSeek
         {
-            get { throw new NotImplementedException(); }
+            get { return true; }
         }
 
         public override bool CanWrite
         {
-            get { throw new NotImplementedException(); }
+            get { return true; }
         }
 
         public override long Seek(long offset, SeekOrigin origin)
         {
-            throw new NotImplementedException();
+            return _base.Seek(offset, origin);
         }
 
         public override void SetLength(long value)
         {
-            throw new NotImplementedException();
+            _base.SetLength(value);
         }
 
         public override long Length
         {
-            get { throw new NotImplementedException(); }
+            get { return _base.Length; }
         }
 
         public override long Position
         {
             get
             {
-                throw new NotImplementedException();
+                return _base.Position;
             }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            set { _base.Position = value; }
         }
-        #endregion
     }
 }

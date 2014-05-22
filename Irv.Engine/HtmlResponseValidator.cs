@@ -5,7 +5,9 @@ using System.Text;
 using Antlr.Runtime;
 using Antlr.Runtime.Tree;
 using HtmlAgilityPack;
-using JsParser.Net;
+using Jint;
+using Jint.Parser;
+using Jint.Parser.Ast;
 
 namespace Irv.Engine
 {
@@ -18,6 +20,8 @@ namespace Irv.Engine
         // Minimal count of nodes at AST of parsed code to threat it as potentially dangerous
         private const int AstNodesCountTreshold = 1;
         // Hint: because of 'alert(0)' consist of 2 nodes, 5 tokens and 8 symbols :D
+
+        private readonly JavaScriptParser _javaScriptParser = new JavaScriptParser();
 
         // HTML event-hanlders attributes names
         private readonly string[] _htmlEventHanlders =
@@ -451,56 +455,20 @@ namespace Irv.Engine
 
         private bool ValidateJsWithParam(string jsValue, string paramValue)
         {
-            CommonTree tree;
-            string lcs;
-            // Javascript code integrity was violated by request param
-            if (!IsValidJsCode(jsValue, out tree)) return false;
-
-            // Skip if common part of attribute value and taintful parameter less than defined treshold
-            return LongestCommonSubstring(jsValue, paramValue, out lcs) <= LcsLengthTreshold
-                // Value of parameter should be treated as harmless only if it whole fits at one token
-                || IsTreeToken(tree, lcs);
-        }
-
-        private bool IsTreeToken(CommonTree tree, string value)
-        {
-            if (tree.Children == null) return false;
-
-            var isTreeToken = false;
-
-            foreach (CommonTree child in tree.Children)
-            {
-                if (isTreeToken || child.Token.Text.IndexOf(value, StringComparison.Ordinal) != -1)
-                {
-                    return true;
-                }
-                isTreeToken |= IsTreeToken(child, value);
-            }
-
-            return isTreeToken;
-        }
-
-        private bool IsValidJsCode(string value, out CommonTree tree)
-        {
-            var lexer = new JavaScriptLexer(new ANTLRStringStream(string.Format("{0}", value)));
-            var parser = new JavaScriptParser(new CommonTokenStream(lexer));
-            tree = null;
             try
             {
-                var program = parser.program();
-                if ((parser.NumberOfSyntaxErrors == 0) &&
-                    (((CommonTree)program.Tree).ChildCount > AstNodesCountTreshold) &&
-                    parser.TokenStream.Count > TokensCountTreshold)
-                {
-                    tree = (CommonTree)program.Tree;
-                    return true;
-                }
+                var parseTree = _javaScriptParser.Parse(jsValue);
+
+                if (parseTree.Errors == null || parseTree.Errors.Count != 0) return false;
+
+                string lcs;
+                return LongestCommonSubstring(jsValue, paramValue, out lcs) <= LcsLengthTreshold ||
+                       parseTree.Tokens.Any(token => token.ToString().Contains(lcs));
             }
-            // ReSharper disable EmptyGeneralCatchClause
-            catch
-            { }
-            // ReSharper restore EmptyGeneralCatchClause
-            return false;
+            catch (ParserError)
+            {
+                return false;
+            }
         }
 
         private int LongestCommonSubstring(string str1, string str2, out string sequence)

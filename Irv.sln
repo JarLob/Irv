@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 12.0.30501.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Irv.TestWebApplication", "Irv.TestWebApplication\Irv.TestWebApplication.csproj", "{6A562A8D-12E9-40DB-BDB4-C2EEF5294BF8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Irv.Engine", "Irv.Engine\Irv.Engine.csproj", "{61E511FC-ACF3-487F-AFD3-5CD9A24E76EE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsParser.Net", "Dependencies\JsParser.Net\JsParser.Net\JsParser.Net.csproj", "{C1AB6B46-E99C-4F27-A30F-1CF04178B455}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Irv.Tests", "Irv.Tests\Irv.Tests.csproj", "{FC28B0FB-4354-47F4-9DF2-45CF47D0C0FA}"
 EndProject
@@ -33,14 +33,6 @@ Global
 		{61E511FC-ACF3-487F-AFD3-5CD9A24E76EE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{61E511FC-ACF3-487F-AFD3-5CD9A24E76EE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{61E511FC-ACF3-487F-AFD3-5CD9A24E76EE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{C1AB6B46-E99C-4F27-A30F-1CF04178B455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C1AB6B46-E99C-4F27-A30F-1CF04178B455}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C1AB6B46-E99C-4F27-A30F-1CF04178B455}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{C1AB6B46-E99C-4F27-A30F-1CF04178B455}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{C1AB6B46-E99C-4F27-A30F-1CF04178B455}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C1AB6B46-E99C-4F27-A30F-1CF04178B455}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C1AB6B46-E99C-4F27-A30F-1CF04178B455}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{C1AB6B46-E99C-4F27-A30F-1CF04178B455}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{FC28B0FB-4354-47F4-9DF2-45CF47D0C0FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FC28B0FB-4354-47F4-9DF2-45CF47D0C0FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC28B0FB-4354-47F4-9DF2-45CF47D0C0FA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

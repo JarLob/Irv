@@ -10,7 +10,7 @@ namespace Irv.Engine
             new ResourceManager("System.Web", new HttpRequestValidationException().GetType().Assembly).GetString(
                 "Dangerous_input_detected");
 
-        private StreamWatcher _watcher;
+        private ResponseFilter _filter;
 
         public void Dispose() { }
 
@@ -18,8 +18,8 @@ namespace Irv.Engine
         {
             httpApplication.BeginRequest += (o, e) =>
                 {
-                    _watcher = new StreamWatcher(httpApplication.Response.Filter);
-                    httpApplication.Response.Filter = _watcher;
+                    _filter = new ResponseFilter(httpApplication.Response.Filter, httpApplication.Response.ContentEncoding);
+                    httpApplication.Response.Filter = _filter;
                 };
 
             httpApplication.EndRequest += (o, e) =>
@@ -28,13 +28,15 @@ namespace Irv.Engine
                     if (!httpApplication.Context.Response.ContentType.StartsWith("text/html")) return;
                     // TODO: Add support of 'application/json' and 'text/xml' MIME types
 
+                    var responseText = _filter.Response;
+
                     var xssResponseValidator = new HtmlResponseValidator();
                     RequestValidationParam dangerousParam;
 
                     if (httpApplication.Context.Items.Contains("Irv.Engine.TaintfulParams") &&
                         !xssResponseValidator.IsValidHtmlResponseString(
                             (List<RequestValidationParam>) httpApplication.Context.Items["Irv.Engine.TaintfulParams"],
-                            _watcher.ToString(),
+                            responseText,
                             out dangerousParam))
                     {
                         throw new HttpRequestValidationException(
@@ -42,6 +44,7 @@ namespace Irv.Engine
                                 _requestValidationErrorMessage, dangerousParam.Source,
                                 string.Format("{0}=\"{1}\"...", dangerousParam.CollectionKey, dangerousParam.Value.Length > 15 ? dangerousParam.Value.Substring(0, 15) : dangerousParam.Value)));
                     }
+
                 };
         }
     }
