@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Antlr.Runtime;
-using Antlr.Runtime.Tree;
-using HtmlAgilityPack;
-using Jint;
+using Gumbo.Bindings;
+using Gumbo.Wrappers;
 using Jint.Parser;
-using Jint.Parser.Ast;
 
 namespace Irv.Engine
 {
@@ -15,11 +12,6 @@ namespace Irv.Engine
     {
         // Minimal length of LCS for taintful param and fragment of response to threat it as potentially dangerous
         private const int LcsLengthTreshold = 7;
-        // Minimal count of tokens of parsed code to threat it as potentially dangerous
-        private const int TokensCountTreshold = 4;
-        // Minimal count of nodes at AST of parsed code to threat it as potentially dangerous
-        private const int AstNodesCountTreshold = 1;
-        // Hint: because of 'alert(0)' consist of 2 nodes, 5 tokens and 8 symbols :D
 
         private readonly JavaScriptParser _javaScriptParser = new JavaScriptParser();
 
@@ -279,10 +271,9 @@ namespace Irv.Engine
                 return false;
             }
 
-            var htmlDocument = new HtmlDocument();
-            htmlDocument.LoadHtml(responseText);
+            var parsedResponse = new GumboWrapper(responseText);
 
-            if (htmlDocument.DocumentNode == null) return true;
+            if (!parsedResponse.Document.Children.Any()) return true;
 
             // Get boundaries for all occurences of request params in response text
             var insertionsMap =
@@ -293,13 +284,13 @@ namespace Irv.Engine
             if (insertionsMap.Count == 0) return true;
 
             // In case of parse errors, needed a check that positions of errors isn't included to insertions map
-            if (htmlDocument.ParseErrors != null && htmlDocument.ParseErrors.Count() != 0)
+            if (parsedResponse.Errors != null && parsedResponse.Errors.Any())
             {
-                foreach (var htmlParseError in htmlDocument.ParseErrors)
+                foreach (var error in parsedResponse.Errors)
                 {
                     foreach (var insertionArea in insertionsMap)
                     {
-                        if (!insertionArea.Includes(htmlParseError.StreamPosition)) continue;
+                        if (!insertionArea.Includes((int) error.position.offset)) continue;
 
                         // Inclusion found (integrity of response has been violated by request parameter at error position)
                         dangerousParam = insertionArea.Param;
@@ -309,73 +300,81 @@ namespace Irv.Engine
             }
 
             // Deny obviously dangerous insertions
-            foreach (var insertionArea in insertionsMap)
-            {
-                var paramValue = insertionArea.Param.Value;
-                for (var i = 0; i < paramValue.Length; i++)
-                {
+            foreach (var insertionArea in from insertionArea in insertionsMap
+                let paramValue = insertionArea.Param.Value
+                where
                     // paramValue ⊃ "<[A-Za-z%!/?]?" 
-                    if (
-                        paramValue[i] == '<' && i < paramValue.Length - 1 && (
+                    paramValue.Where(
+                        (t, i) =>
+                            t == '<' && i < paramValue.Length - 1 &&
                             (
-                                (paramValue[i + 1] >= 'a' && paramValue[i + 1] <= 'z') ||
-                                (paramValue[i + 1] >= 'A' && paramValue[i + 1] <= 'Z')
-                            ) ||
-                            paramValue[i + 1] == '%' ||
-                            paramValue[i + 1] == '!' ||
-                            paramValue[i + 1] == '/' ||
-                            paramValue[i + 1] == '?'
-                        ))
-                    {
-                        dangerousParam = insertionArea.Param;
-                        return false;
-                    }
-                }
+                                (
+                                    (paramValue[i + 1] >= 'a' && paramValue[i + 1] <= 'z')
+                                 || (paramValue[i + 1] >= 'A' && paramValue[i + 1] <= 'Z')
+                                )
+                             || paramValue[i + 1] == '%'
+                             || paramValue[i + 1] == '!' 
+                             || paramValue[i + 1] == '/' 
+                             || paramValue[i + 1] == '?'
+                            )
+                        ).Any()
+                select insertionArea)
+            {
+                dangerousParam = insertionArea.Param;
+                return false;
             }
 
-            // Walk through elements of parsed response to check its integrity
-            foreach (
-                var node in
-                    htmlDocument.DocumentNode.Descendants()
-                                .Where(x => x.NodeType == HtmlNodeType.Element || x.NodeType == HtmlNodeType.Comment))
+            var result = true;
+
+            foreach (var node in parsedResponse.Document.Children.OfType<ElementWrapper>())
             {
-                var nodeBeginPosition = node.StreamPosition;
-                var nodeEndPosition = nodeBeginPosition + node.OuterHtml.Length;
+                result &= ValidateNode(node, insertionsMap, ref dangerousParam);
+            }
+
+            return result;
+        }
+
+        private bool ValidateNode(ElementWrapper node, InsertionsMap insertionsMap, ref RequestValidationParam dangerousParam)
+        {
+            var result = true;
+
+            foreach (
+                var element in node.Children.OfType<ElementWrapper>())
+            {
+                var elementStart = (int)element.StartPosition.offset;
+                var elementEnd = (int)element.EndPosition.offset;
 
                 foreach (
                     var insertionArea in
-                        insertionsMap.Where(ia => ia.Includes(nodeBeginPosition, nodeEndPosition)))
+                        insertionsMap.Where(ia => ia.Includes(elementStart, elementEnd)))
                 {
                     // Check if start position of node was included to insertions map
-                    if (insertionArea.Includes(nodeBeginPosition))
+                    if (insertionArea.Includes(elementStart))
                     {
                         // Inclusion found (node was injected by request parameter)
                         dangerousParam = insertionArea.Param;
                         return false;
                     }
 
-                    if (node.NodeType != HtmlNodeType.Element) continue;
-
-                    foreach (var attr in node.Attributes)
+                    foreach (var attr in element.Attributes)
                     {
-                        var attrNameBeginPosition = attr.StreamPosition;
+                        var attrNameStart = (int)attr.NameStart.offset;
 
-                        if (insertionArea.Includes(attrNameBeginPosition))
+                        if (insertionArea.Includes(attrNameStart))
                         {
                             // Inclusion found (attribute was injected by request parameter)
                             dangerousParam = insertionArea.Param;
                             return false;
                         }
 
-                        var attrValueBeginPosition = responseText.IndexOf(attr.Value, attrNameBeginPosition,
-                                                                          StringComparison.Ordinal);
-                        var attrValueEndPosition = attrValueBeginPosition + attr.Value.Length;
+                        var attrValueStart = (int)attr.ValueStart.offset;
+                        var attrValueEnd = (int)attr.ValueEnd.offset;
 
                         // Skip if attribute value wasn't tainted by request parameter
-                        if (!insertionArea.Includes(attrValueBeginPosition, attrValueEndPosition)) continue;
+                        if (!insertionArea.Includes(attrValueStart, attrValueEnd)) continue;
 
                         // Skip if attribute value passes validation
-                        if (ValidateAttrWithParam(attr.Name, attr.Value, insertionArea.Param.Value)) continue;
+                        if (ValidateAttribute(attr.Name, attr.Value, insertionArea.Param.Value)) continue;
 
                         // Attribute value is dangerously tainted
                         dangerousParam = insertionArea.Param;
@@ -383,35 +382,41 @@ namespace Irv.Engine
                     }
                 }
 
-                if (node.Name != "script" || string.IsNullOrEmpty(node.InnerText)) continue;
-
-                // Validate javscript code inside <script /> tag
-                var scriptBeginPosition = responseText.IndexOf(node.InnerText, nodeBeginPosition, StringComparison.Ordinal);
-                var scriptEndPosition = scriptBeginPosition + node.InnerText.Length;
-
-                foreach (
-                    var insertionArea in
-                        insertionsMap.Where(ia => ia.Includes(scriptBeginPosition, scriptEndPosition)))
+                if (element.Tag == GumboTag.GUMBO_TAG_SCRIPT && element.Children.Any(child => child is TextWrapper))
                 {
-                    if (ValidateJsWithParam(node.InnerText, insertionArea.Param.Value)) continue;
+                    var text = element.Children.OfType<TextWrapper>().FirstOrDefault();
 
-                    // Javascript code is dangerously tainted
-                    dangerousParam = insertionArea.Param;
-                    return false;
+                    if (text != null)
+                    {
+                        // Validate javscript code inside <script /> tag
+                        foreach (
+                            var insertionArea in
+                                insertionsMap.Where(
+                                    ia =>
+                                        ia.Includes((int) text.StartPosition.offset,
+                                            (int) text.StartPosition.offset + text.Text.Length))
+                                    .Where(insertionArea => !ValidateJavascript(text.Text, insertionArea.Param.Value)))
+                        {
+                            // Javascript code is dangerously tainted
+                            dangerousParam = insertionArea.Param;
+                            return false;
+                        }
+                    }
                 }
 
-                if (node.Name != "style" || string.IsNullOrEmpty(node.InnerText)) continue;
-
                 // TODO: Add integrity validation of style nodes
+                
+                result &= ValidateNode(element, insertionsMap, ref dangerousParam);
             }
-            return true;
+
+            return result;
         }
 
-        private bool ValidateAttrWithParam(string attrName, string attrValue, string paramValue)
+        private bool ValidateAttribute(string attrName, string attrValue, string paramValue)
         {
             if (_htmlEventHanlders.Contains(attrName))
             {
-                return ValidateJsWithParam(attrValue, paramValue);
+                return ValidateJavascript(attrValue, paramValue);
             }
 
             if (_htmlRefAttrs.Contains(attrName))
@@ -453,7 +458,7 @@ namespace Irv.Engine
             return true;
         }
 
-        private bool ValidateJsWithParam(string jsValue, string paramValue)
+        private bool ValidateJavascript(string jsValue, string paramValue)
         {
             try
             {
