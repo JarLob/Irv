@@ -404,7 +404,7 @@ namespace Irv.Engine
                     }
                 }
 
-                // TODO: Add integrity validation of style nodes
+                // TODO: Add integrity validation of style nodes here
                 
                 result &= ValidateNode(element, insertionsMap, ref dangerousParam);
             }
@@ -451,7 +451,7 @@ namespace Irv.Engine
 
             if (attrName == "style")
             {
-                // TODO: Add integrity validation of style attrs
+                // TODO: Add integrity validation of style attrs here
                 return true;
             }
 

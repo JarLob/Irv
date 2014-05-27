@@ -53,7 +53,7 @@ namespace Irv.Tests
 
         private void TestScriptRunner(string testName)
         {
-            var scriptLines = File.ReadAllLines(string.Format("{0}\\TestScripts\\{1}.testscript", Directory.GetCurrentDirectory(), testName));
+            var scriptLines = File.ReadAllLines(string.Format("{0}\\TestData\\XssScripts\\{1}.testscript", Directory.GetCurrentDirectory(), testName));
             var templateBuilder = new StringBuilder();
             var currentScriptLine = 0;
 

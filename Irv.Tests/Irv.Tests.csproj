@@ -62,22 +62,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="TestScripts\EscapedAttrInjection.testscript">
+    <None Include="TestData\XssScripts\EscapedAttrInjection.testscript">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="TestScripts\EscapedJsInjection.testscript">
+    <None Include="TestData\XssScripts\EscapedJsInjection.testscript">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="TestScripts\FragmentedInjectionx2.testscript">
+    <None Include="TestData\XssScripts\FragmentedInjectionx2.testscript">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="TestScripts\FragmentedInjectionx3.testscript">
+    <None Include="TestData\XssScripts\FragmentedInjectionx3.testscript">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="TestScripts\TriviaTagInjection.testscript">
+    <None Include="TestData\XssScripts\TriviaTagInjection.testscript">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="TestScripts\UriInjection.testscript">
+    <None Include="TestData\XssScripts\UriInjection.testscript">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
