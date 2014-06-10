@@ -1,8 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Linq.Expressions;
+﻿using System.IO;
 using System.Text;
-using System.Web.Caching;
 
 namespace Irv.Engine
 {
@@ -12,13 +9,19 @@ namespace Irv.Engine
 
         private readonly Encoding _encoding;
 
-        public string Response { get; set; }
+        private readonly StringBuilder _response;
 
-            
+        public string Response
+        {
+            get { return _response.ToString(); }
+        }
+
+
         public ResponseFilter(Stream stream, Encoding encoding)
         {
             _base = stream;
             _encoding = encoding;
+            _response = new StringBuilder();
         }
 
         public override void Flush()
@@ -35,7 +38,7 @@ namespace Irv.Engine
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            Response += _encoding.GetString(buffer);
+            _response.Append(_encoding.GetString(buffer));
         }
 
         public override string ToString()
