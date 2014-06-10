@@ -15,45 +15,51 @@ namespace Irv.Tests
     {
         public TestContext TestContext { get; set; }
 
+        [DeploymentItem(@"TestData\XssTriviaTagInjection.testscript")]
         [TestMethod]
         public void TriviaTagInjection()
         {
-            TestScriptRunner("TriviaTagInjection");
+            TestScriptRunner("XssTriviaTagInjection");
         }
 
+        [DeploymentItem(@"TestData\XssEscapedJsInjection.testscript")]
         [TestMethod]
         public void EscapedJsInjection()
         {
-            TestScriptRunner("EscapedJsInjection");
+            TestScriptRunner("XssEscapedJsInjection");
         }
 
+        [DeploymentItem(@"TestData\XssEscapedAttrInjection.testscript")]
         [TestMethod]
         public void EscapedAttrInjection()
         {
-            TestScriptRunner("EscapedAttrInjection");
+            TestScriptRunner("XssEscapedAttrInjection");
         }
 
+        [DeploymentItem(@"TestData\XssFragmentedInjectionx2.testscript")]
         [TestMethod]
         public void FragmentedInjectionx2()
         {
-            TestScriptRunner("FragmentedInjectionx2");
+            TestScriptRunner("XssFragmentedInjectionx2");
         }
 
+        [DeploymentItem(@"TestData\XssFragmentedInjectionx3.testscript")]
         [TestMethod]
         public void FragmentedInjectionx3()
         {
-            TestScriptRunner("FragmentedInjectionx3");
+            TestScriptRunner("XssFragmentedInjectionx3");
         }
 
+        [DeploymentItem(@"TestData\XssUriInjection.testscript")]
         [TestMethod]
         public void UriInjection()
         {
-            TestScriptRunner("UriInjection");
+            TestScriptRunner("XssUriInjection");
         }
 
         private void TestScriptRunner(string testName)
         {
-            var scriptLines = File.ReadAllLines(string.Format("{0}\\TestData\\XssScripts\\{1}.testscript", Directory.GetCurrentDirectory(), testName));
+            var scriptLines = File.ReadAllLines(string.Format("{0}.testscript", testName));
             var templateBuilder = new StringBuilder();
             var currentScriptLine = 0;
 

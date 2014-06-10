@@ -62,23 +62,26 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="TestData\XssScripts\EscapedAttrInjection.testscript">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="TestData\.XssTemplate.testscript">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="TestData\XssScripts\EscapedJsInjection.testscript">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="TestData\XssEscapedAttrInjection.testscript">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="TestData\XssScripts\FragmentedInjectionx2.testscript">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="TestData\XssEscapedJsInjection.testscript">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="TestData\XssScripts\FragmentedInjectionx3.testscript">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="TestData\XssFragmentedInjectionx2.testscript">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="TestData\XssScripts\TriviaTagInjection.testscript">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="TestData\XssFragmentedInjectionx3.testscript">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="TestData\XssScripts\UriInjection.testscript">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="TestData\XssTriviaTagInjection.testscript">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\XssUriInjection.testscript">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Choose>

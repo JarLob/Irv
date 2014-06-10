@@ -89,6 +89,7 @@
     <Content Include="Content\Highlight\vs.css" />
     <Content Include="Content\Highlight\xcode.css" />
     <Content Include="Content\Highlight\zenburn.css" />
+    <Content Include="Default.aspx" />
     <Content Include="XssDemo\Default.aspx" />
     <Content Include="Error.aspx" />
     <Content Include="Global.asax" />
@@ -99,6 +100,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Code\Highlight\Highlight.cs" />
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="XssDemo\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

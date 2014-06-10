@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Irv.TestWebApplication.XssDemo
+namespace Irv.TestWebApplication
 {
 
 
