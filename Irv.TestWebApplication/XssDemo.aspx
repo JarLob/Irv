@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Irv.TestWebApplication.XssDemo.Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="XssDemo.aspx.cs" Inherits="Irv.TestWebApplication.Default" %>
 
 <!DOCTYPE html>
 
@@ -7,8 +7,10 @@
     <title>Irv - Improved [ASP.NET] Request Validation: online demo</title>
     <script>
         function welcome() {
-            var welcoming = document.getElementById('welcoming');
-            welcoming.innerText = 'Welcome, <%=Request.Params["param1"]%>!';
+            var welcoming_element = document.getElementById('welcoming');
+            var welcoming_string = 'Welcome, <%=Request.Params["param1"]%>!';
+            welcoming_element.innerText = welcoming_string;
+            welcoming_element.textContent = welcoming_string;
         }
     </script>
     <%= Highlight.Include("vs") %>
@@ -29,8 +31,10 @@
     &lt;title&gt;Irv - Improved [ASP.NET] Request Validation: online demo&lt;/title&gt;
     &lt;script&gt;
         function welcome() {
-            var welcoming = document.getElementById(&#39;welcoming&#39;);
-            welcoming.innerText = &#39;Welcome, &lt;%=Request.Params[&quot;param1&quot;]%&gt;!&#39;;
+            var welcoming_element = document.getElementById(&#39;welcoming&#39;);
+            var welcoming_string = &#39;Welcome, &lt;%=Request.Params[&quot;param1&quot;]%&gt;!&#39;;
+            welcoming_element.innerText = welcoming_string;
+            welcoming_element.textContent = welcoming_string;
         }
     &lt;/script&gt;
     &lt;!-- Highlight.js inclusion tag --&gt;

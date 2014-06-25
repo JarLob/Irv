@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Irv.TestWebApplication.XssDemo
+namespace Irv.TestWebApplication
 {
     public partial class Default : System.Web.UI.Page
     {
@@ -12,7 +12,7 @@ namespace Irv.TestWebApplication.XssDemo
                 && string.IsNullOrEmpty(Request.Params["param2"]) 
                 && string.IsNullOrEmpty(Request.Params["param2"]))
             {
-                Response.Redirect(@"Default.aspx?param1=user&param2=http://localhost&param3=Follow%20this%20URL");
+                Response.Redirect(@"?param1=user&param2=http://localhost&param3=Follow%20this%20URL");
             }
         }
     }

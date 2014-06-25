@@ -89,8 +89,7 @@
     <Content Include="Content\Highlight\vs.css" />
     <Content Include="Content\Highlight\xcode.css" />
     <Content Include="Content\Highlight\zenburn.css" />
-    <Content Include="Default.aspx" />
-    <Content Include="XssDemo\Default.aspx" />
+    <Content Include="XssDemo.aspx" />
     <Content Include="Error.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\Highlight\highlight.pack.js" />
@@ -100,19 +99,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Code\Highlight\Highlight.cs" />
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="XssDemo.aspx.cs">
+      <DependentUpon>XssDemo.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="XssDemo\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="XssDemo\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="XssDemo.aspx.designer.cs">
+      <DependentUpon>XssDemo.aspx</DependentUpon>
     </Compile>
     <Compile Include="Error.aspx.cs">
       <DependentUpon>Error.aspx</DependentUpon>
@@ -167,7 +159,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:23478/</IISUrl>
+          <IISUrl>http://localhost:23478</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
